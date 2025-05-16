@@ -28,16 +28,15 @@ async function getPlaylistTracks(token, playlistId) {
 
 (async () => {
   const token = await getAccessToken();
-  // const playlistId = "3bDJLJzvUBxBV4C7mezz6p";
-  const playlistId = "266rianuwlkcqziaau9k0rq8b"; // desai english mix playlist 
+  const playlistId = "3bDJLJzvUBxBV4C7mezz6p";
+  // const playlistId = "37i9dQZF1DWVDvBpGQbzXj";
+  // const playlistId = "266rianuwlkcqziaau9k0rq8b"; // desai english mix playlist 
   const tracks = await getPlaylistTracks(token, playlistId);
 
   const romanticTracks = [];
 
   for (const item of tracks) {
     const track = item.track;
-
-    // Sometimes there might be null tracks or artists
     if (!track || !track.artists || track.artists.length === 0) continue;
 
     const artistId = track.artists[0].id;
@@ -49,7 +48,11 @@ async function getPlaylistTracks(token, playlistId) {
 
       const genres = artistRes.data.genres;
       if (genres.some(g => g.toLowerCase().includes("romantic") || g.toLowerCase().includes("love") || g.toLowerCase().includes("filmi") || g.toLowerCase().includes("bollywood"))) {
-        romanticTracks.push(track.name);
+        romanticTracks.push({
+          name: track.name,
+          url: track.external_urls.spotify, // <-- This is the song URL
+          uri: track.uri // <-- This is the Spotify URI (for playlist API)
+        });
       }
     } catch (err) {
       console.error(`Error fetching genres for artist ${artistId}:`, err.message);
@@ -57,5 +60,7 @@ async function getPlaylistTracks(token, playlistId) {
   }
 
   console.log("Romantic songs:");
-  romanticTracks.forEach((name, index) => console.log(`${index + 1}. ${name}`));
+  romanticTracks.forEach((track, index) => 
+    console.log(`${index + 1}. ${track.name} - ${track.url}`)
+  );
 })();
