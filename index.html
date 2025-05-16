@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Genre Playlist Maker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" ></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Spotify Genre Playlist Maker</h1>
+        <form id="playlistForm">
+            <input type="text" id="playlistUrl" placeholder="Paste Spotify Playlist URL here" required>
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+    <script>
+        let playlistUrlValue = "";
+
+        document.getElementById('playlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            playlistUrlValue = document.getElementById('playlistUrl').value.trim();
+            document.getElementById('result').textContent = "Stored Playlist URL: " + playlistUrlValue;
+            // You can now use playlistUrlValue in your JS logic
+        });
+    </script>
+</body>
+</html>
